@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Cristian Santa" />
+
+
+<title>Gráficos en R</title>
+
+<script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="bootstrap.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Indeportes Antioquia</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-code"></span>
+     
+    Introducción
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="What_R.html">Qué es R?</a>
+    </li>
+    <li>
+      <a href="Install_R.html">Instalación</a>
+    </li>
+    <li>
+      <a href="Algorithm_R.html">Algoritmos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="glyphicon glyphicon glyphicon glyphicon-check"></span>
+     
+    Programación
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Structure_R.html">Estructuras</a>
+    </li>
+    <li>
+      <a href="FunPkgs_R.html">Funciones y Paquetes</a>
+    </li>
+    <li>
+      <a href="Graph_R.html">Gráficos</a>
+    </li>
+    <li>
+      <a href="Dataset_R.html">Manejo de Datos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="glyphicon glyphicon glyphicon glyphicon-stats"></span>
+     
+    Análisis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Concept.html">Conceptos</a>
+    </li>
+    <li>
+      <a href="Descriptive_I.html">Descriptiva I</a>
+    </li>
+    <li>
+      <a href="Descriptive_II.html">Descriptiva II</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:cdsantae@gmail.com">
+    <span class="glyphicon glyphicon glyphicon glyphicon-envelope"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Gráficos en R</h1>
+<h4 class="author">Cristian Santa</h4>
+
+</div>
+
+
+<div id="introducción" class="section level2">
+<h2>Introducción</h2>
+<p>El software <code>R</code> contiene una batería de gráficos en su paquete <code>base</code>, con el cual es posible realizar la mayoría de gráficos estadísticos conocidos. Existen muchos paquetes adicionales que contienen gráficos más complejos para soluciones específicas, sin embargo, con las funciones del <code>base</code> es posible realizar muchas personalizaciones.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>?plot</span></code></pre></div>
+<p>La función <code>plot</code> es la que se usa para graficar objetos de <code>R</code>, como el software es orientado a objetos (OOP), entonces los gráficos interpretan las clases a las que pertenecen los objetos creados en <code>R</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">methods</span>(plot)</span></code></pre></div>
+<pre><code>##  [1] plot.acf*           plot.data.frame*    plot.decomposed.ts*
+##  [4] plot.default        plot.dendrogram*    plot.density*      
+##  [7] plot.ecdf           plot.factor*        plot.formula*      
+## [10] plot.function       plot.hclust*        plot.histogram*    
+## [13] plot.HoltWinters*   plot.isoreg*        plot.lm*           
+## [16] plot.medpolish*     plot.mlm*           plot.ppr*          
+## [19] plot.prcomp*        plot.princomp*      plot.profile.nls*  
+## [22] plot.raster*        plot.spec*          plot.stepfun       
+## [25] plot.stl*           plot.table*         plot.ts            
+## [28] plot.tskernel*      plot.TukeyHSD*     
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+<p>Todos los gráficos están compuestos de las siguientes partes:</p>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="gráficos-con-base" class="section level2">
+<h2>Gráficos con <code>base</code></h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">args</span>(plot.default)</span></code></pre></div>
+<pre><code>## function (x, y = NULL, type = &quot;p&quot;, xlim = NULL, ylim = NULL, 
+##     log = &quot;&quot;, main = NULL, sub = NULL, xlab = NULL, ylab = NULL, 
+##     ann = par(&quot;ann&quot;), axes = TRUE, frame.plot = axes, panel.first = NULL, 
+##     panel.last = NULL, asp = NA, xgap.axis = NA, ygap.axis = NA, 
+##     ...) 
+## NULL</code></pre>
+<p>La función <code>plot()</code> recibe dos vectores <code>x</code> e <code>y</code> (también puede ser <code>matrix</code>, <code>table</code> o <code>data.frame</code>) que deben tener el mismo tamaño y por defecto grafica su representación por puntos.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">set.seed</span>(<span class="dv">2019</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>y &lt;-<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">10</span>,<span class="op">-</span><span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="kw">plot</span>(x,y)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">plot</span>(y<span class="op">~</span>x)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">plot</span>(x,y,<span class="dt">main =</span> <span class="st">&quot;Título gráfico&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-5-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">plot</span>(x,y,<span class="dt">main =</span> <span class="st">&quot;Título gráfico&quot;</span>, <span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-5-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">plot</span>(x,y,<span class="dt">main =</span> <span class="st">&quot;Título gráfico&quot;</span>, <span class="dt">type=</span><span class="st">&quot;p&quot;</span>, <span class="dt">pch=</span><span class="dv">19</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-5-5.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">plot</span>(x,y,<span class="dt">main =</span> <span class="st">&quot;Título gráfico&quot;</span>, <span class="dt">type=</span><span class="st">&quot;p&quot;</span>, <span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-5-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">plot</span>(x,y,<span class="dt">main =</span> <span class="st">&quot;Título gráfico&quot;</span>, <span class="dt">type=</span><span class="st">&quot;b&quot;</span>, <span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">lty=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-5-7.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /><img src="Graph_R_files/figure-html/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Después de llamar un <code>plot</code> puedes incluir elementos adicionales al gráfico, como líneas (<code>lines</code>, <code>abline</code>), puntos (<code>points</code>) o texto (<code>text</code>). Cada instrucción ingresa una capa adicional al gráfico en el orden de entrada.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">plot</span>(y<span class="op">~</span>x,<span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">main=</span><span class="st">&quot;Ejemplo Rectas&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="kw">lines</span>(x,y,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">lty=</span><span class="dv">2</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="kw">points</span>(x,y<span class="op">+</span><span class="dv">2</span>,<span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">col=</span><span class="dv">2</span>)</span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="kw">lines</span>(x,y<span class="op">+</span><span class="dv">2</span>,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">lty=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="dv">2</span>)</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="kw">abline</span>(<span class="kw">lm</span>(y<span class="op">~</span>x))</span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="kw">abline</span>(<span class="kw">lm</span>(<span class="kw">I</span>(y<span class="op">+</span><span class="dv">2</span>)<span class="op">~</span>x),<span class="dt">col=</span><span class="dv">2</span>)</span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="kw">text</span>(<span class="dv">2</span>,<span class="dv">8</span>,<span class="dt">labels =</span> <span class="st">&quot;Recta 1&quot;</span>)</span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="kw">text</span>(<span class="dv">2</span>,<span class="dv">9</span>,<span class="dt">labels =</span> <span class="st">&quot;Recta 2&quot;</span>,<span class="dt">col=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>El comando <code>legend</code> permite agregar leyendas a los gráficos, para instruir su lectura.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">plot</span>(mpg<span class="op">~</span>disp,<span class="dt">col=</span><span class="kw">factor</span>(gear),<span class="dt">data=</span>mtcars,<span class="dt">pch=</span><span class="dv">19</span>,</span>
+<span id="cb14-2"><a href="#cb14-2"></a>     <span class="dt">main=</span><span class="st">&quot;Desplazamiento vs Consumo Gasolina&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">col=</span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dt">legend =</span> <span class="kw">levels</span>(<span class="kw">factor</span>(mtcars<span class="op">$</span>gear)),</span>
+<span id="cb14-4"><a href="#cb14-4"></a>       <span class="dt">title =</span> <span class="st">&quot;Número de Cambios&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">plot</span>(mpg<span class="op">~</span>disp,<span class="dt">data=</span>mtcars,<span class="dt">type=</span><span class="st">&quot;n&quot;</span>,</span>
+<span id="cb15-2"><a href="#cb15-2"></a>     <span class="dt">main=</span><span class="st">&quot;Desplazamiento vs Consumo Gasolina&quot;</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="kw">text</span>(mpg<span class="op">~</span>disp,<span class="dt">data=</span>mtcars,<span class="dt">labels=</span><span class="kw">rownames</span>(mtcars),<span class="dt">cex=</span><span class="fl">0.6</span>,</span>
+<span id="cb15-4"><a href="#cb15-4"></a>     <span class="dt">col=</span>gear<span class="dv">-2</span>,<span class="dt">adj=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.5</span>))</span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="dt">fill=</span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dt">legend =</span> <span class="kw">levels</span>(<span class="kw">factor</span>(mtcars<span class="op">$</span>gear)),</span>
+<span id="cb15-6"><a href="#cb15-6"></a>       <span class="dt">title =</span> <span class="st">&quot;Número de Cambios&quot;</span>,<span class="dt">horiz =</span> T)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="Colores.png" /></p>
+<center>
+<b><a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" target="_blank">Otros Colores</b></a>
+</center>
+<hr>
+</div>
+<div id="gráficos-estadísticos" class="section level2">
+<h2>Gráficos Estadísticos</h2>
+<p><code>R</code> es un software de estadística, como tal su entorno está desarrollado para realizar análisis estadísticos y esto no es ajeno a los gráficos.</p>
+<hr>
+<div id="barras-barplot" class="section level3">
+<h3>Barras <code>barplot</code></h3>
+<p>El gráfico de barras sirve para evidenciar las frecuencias absolutas, o relativas de una variable categórica.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">set.seed</span>(<span class="dv">2019</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a>ciudades &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dt">replace =</span> T,</span>
+<span id="cb16-3"><a href="#cb16-3"></a>                   <span class="dt">prob =</span> <span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.4</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.1</span>))</span>
+<span id="cb16-4"><a href="#cb16-4"></a>ciudades &lt;-<span class="st"> </span><span class="kw">factor</span>(ciudades,</span>
+<span id="cb16-5"><a href="#cb16-5"></a>                   <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Cali&quot;</span>,<span class="st">&quot;Medellín&quot;</span>,<span class="st">&quot;Bogotá&quot;</span>,</span>
+<span id="cb16-6"><a href="#cb16-6"></a>                              <span class="st">&quot;Barranquilla&quot;</span>,<span class="st">&quot;Cartagena&quot;</span>))</span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="kw">plot</span>(ciudades,<span class="dt">main=</span><span class="st">&quot;Distribución de las Ciudades&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>En el gráfico anterior <code>plot</code> reconoce que <code>ciudades</code> es un factory realiza el grafico de barras.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">table</span>(ciudades)</span></code></pre></div>
+<pre><code>## ciudades
+##         Cali     Medellín       Bogotá Barranquilla    Cartagena 
+##           26          113           49           90           22</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">barplot</span>(<span class="kw">table</span>(ciudades),<span class="dt">col=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">120</span>),</span>
+<span id="cb19-2"><a href="#cb19-2"></a>        <span class="dt">main =</span> <span class="st">&quot;Distribución de las Ciudades&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="gráfico-tortas-o-secciones-pie" class="section level3">
+<h3>Gráfico Tortas o secciones <code>pie</code></h3>
+<p>El gráfico de secciones permite evidenciar proporcionalmente cómo se distribuyen proporcionalmente las frecuencias de una variable categórica en un círculo.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">pie</span>(<span class="kw">table</span>(ciudades))</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="gráfico-de-mosaico-mosaicplot" class="section level3">
+<h3>Gráfico de mosaico <code>mosaicplot</code></h3>
+<p>El gráfico de mosaico sirve para comparar dos variables categóricas.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>impacto &lt;-<span class="st"> </span><span class="kw">gl</span>(<span class="dv">3</span>,<span class="dv">100</span>,<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Bajo&quot;</span>,<span class="st">&quot;Mediano&quot;</span>,<span class="st">&quot;Alto&quot;</span>))</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="kw">table</span>(ciudades,impacto)</span></code></pre></div>
+<pre><code>##               impacto
+## ciudades       Bajo Mediano Alto
+##   Cali           12       6    8
+##   Medellín       41      34   38
+##   Bogotá         17      14   18
+##   Barranquilla   26      37   27
+##   Cartagena       4       9    9</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">mosaicplot</span>(<span class="kw">table</span>(ciudades,impacto),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;red&quot;</span>),</span>
+<span id="cb23-2"><a href="#cb23-2"></a>           <span class="dt">main=</span><span class="st">&quot;Impacto por Ciudad&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="gráfico-cajas-y-bigotes-boxplot" class="section level3">
+<h3>Gráfico cajas y bigotes <code>boxplot</code></h3>
+<p>Los gráficos de cajas y bigotes permiten analizar el comportamiento de una variable cuantitativa, se compone de una caja que continene el 50% de la información la cual está dividida en dos por la mediana y se extiende de cada extremo de la caja unos bigotes que muestra la longitud de la distribución. Es una buena forma de evdenciar datos extremos o atípicos, ya que, muestra los puntos que potencialmente no pertenecen a la distribución de la variable por fuera de los bigotes.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">set.seed</span>(<span class="dv">4321</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a>ingresos &lt;-<span class="st"> </span><span class="kw">ceiling</span>(<span class="kw">rlnorm</span>(<span class="dv">300</span>,<span class="dv">5</span>,<span class="fl">0.5</span>))</span>
+<span id="cb24-3"><a href="#cb24-3"></a>colores &lt;-<span class="st"> </span><span class="kw">colors</span>()[<span class="kw">sample</span>(<span class="dv">675</span>,<span class="dv">5</span>)]</span>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="kw">boxplot</span>(ingresos<span class="op">~</span>ciudades,<span class="dt">pch=</span><span class="dv">20</span>,<span class="dt">col=</span>colores,</span>
+<span id="cb24-5"><a href="#cb24-5"></a>        <span class="dt">main=</span><span class="st">&quot;Distribución de los ingresos por ciudad&quot;</span>,</span>
+<span id="cb24-6"><a href="#cb24-6"></a>        <span class="dt">ylab=</span><span class="st">&quot;Miles de millones ($)&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">boxplot</span>(ingresos<span class="op">~</span>ciudades,<span class="dt">pch=</span><span class="dv">20</span>,<span class="dt">col=</span>colores,<span class="dt">horizontal=</span>T,</span>
+<span id="cb25-2"><a href="#cb25-2"></a>        <span class="dt">main=</span><span class="st">&quot;Distribución de los ingresos por ciudad&quot;</span>,</span>
+<span id="cb25-3"><a href="#cb25-3"></a>        <span class="dt">xlab=</span><span class="st">&quot;Miles de millones ($)&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">cex.axis=</span><span class="fl">0.7</span>,<span class="dt">lty=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">boxplot</span>(ingresos<span class="op">~</span>ciudades,<span class="dt">pch=</span><span class="dv">20</span>,<span class="dt">col=</span>colores,</span>
+<span id="cb26-2"><a href="#cb26-2"></a>        <span class="dt">main=</span><span class="st">&quot;Distribución de los ingresos por ciudad&quot;</span>,</span>
+<span id="cb26-3"><a href="#cb26-3"></a>        <span class="dt">ylab=</span><span class="st">&quot;Miles de millones ($)&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">notch=</span>T)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="histogramas" class="section level3">
+<h3>Histogramas</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">hist</span>(ingresos)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">hist</span>(ingresos, <span class="dt">main=</span><span class="st">&quot;Densidad de los ingresos&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>,</span>
+<span id="cb28-2"><a href="#cb28-2"></a>     <span class="dt">col=</span><span class="st">&quot;lightblue&quot;</span>,<span class="dt">freq=</span>F)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">hist</span>(ingresos, <span class="dt">main=</span><span class="st">&quot;Distribución de los ingresos&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>,</span>
+<span id="cb29-2"><a href="#cb29-2"></a>     <span class="dt">col=</span><span class="st">&quot;lightblue&quot;</span>)</span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="kw">hist</span>(ingresos, <span class="dt">main=</span><span class="st">&quot;Distribución de los ingresos&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>,</span>
+<span id="cb29-4"><a href="#cb29-4"></a>     <span class="dt">col=</span><span class="st">&quot;lightblue&quot;</span>)</span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="kw">rug</span>(ingresos,<span class="dt">col=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="densidades" class="section level3">
+<h3>Densidades</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>(dening &lt;-<span class="st"> </span><span class="kw">density</span>(ingresos))</span></code></pre></div>
+<pre><code>## 
+## Call:
+##  density.default(x = ingresos)
+## 
+## Data: ingresos (300 obs.);   Bandwidth &#39;bw&#39; = 22.59
+## 
+##        x                y            
+##  Min.   :-23.77   Min.   :6.960e-07  
+##  1st Qu.:131.36   1st Qu.:1.256e-04  
+##  Median :286.50   Median :6.503e-04  
+##  Mean   :286.50   Mean   :1.610e-03  
+##  3rd Qu.:441.64   3rd Qu.:2.899e-03  
+##  Max.   :596.77   Max.   :5.697e-03</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">plot</span>(dening)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="kw">plot</span>(dening,<span class="dt">col=</span><span class="dv">2</span>,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">las=</span><span class="dv">1</span>,</span>
+<span id="cb33-2"><a href="#cb33-2"></a>     <span class="dt">main=</span><span class="st">&quot;Densidad de los ingresos&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">hist</span>(ingresos, <span class="dt">main=</span><span class="st">&quot;Densidad de los ingresos&quot;</span>,<span class="dt">las=</span><span class="dv">1</span>,</span>
+<span id="cb34-2"><a href="#cb34-2"></a>     <span class="dt">col=</span><span class="st">&quot;lightblue&quot;</span>,<span class="dt">freq=</span>F)</span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="kw">rug</span>(ingresos,<span class="dt">col=</span><span class="dv">2</span>)</span>
+<span id="cb34-4"><a href="#cb34-4"></a><span class="kw">lines</span>(dening,<span class="dt">col=</span><span class="dv">2</span>,<span class="dt">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-15-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Resaltando una sección en particular</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>x1 &lt;-<span class="st"> </span><span class="kw">min</span>(<span class="kw">which</span>(dening<span class="op">$</span>x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">150</span>))  </span>
+<span id="cb35-3"><a href="#cb35-3"></a>x2 &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">which</span>(dening<span class="op">$</span>x <span class="op">&lt;</span><span class="st"> </span><span class="dv">370</span>))</span>
+<span id="cb35-4"><a href="#cb35-4"></a><span class="kw">plot</span>(dening,<span class="dt">col=</span><span class="dv">2</span>,<span class="dt">lwd=</span><span class="dv">2</span>,<span class="dt">las=</span><span class="dv">1</span>,</span>
+<span id="cb35-5"><a href="#cb35-5"></a>     <span class="dt">main=</span><span class="st">&quot;Densidad de los ingresos&quot;</span>)</span>
+<span id="cb35-6"><a href="#cb35-6"></a><span class="kw">polygon</span>(<span class="dt">x=</span>dening<span class="op">$</span>x[<span class="kw">c</span>(x1,x1<span class="op">:</span>x2,x2)],</span>
+<span id="cb35-7"><a href="#cb35-7"></a>        <span class="dt">y=</span><span class="kw">c</span>(<span class="dv">0</span>,dening<span class="op">$</span>y[x1<span class="op">:</span>x2],<span class="dv">0</span>), <span class="dt">col=</span><span class="kw">rgb</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dt">alpha =</span> <span class="fl">0.5</span>),</span>
+<span id="cb35-8"><a href="#cb35-8"></a>        <span class="dt">border =</span> <span class="ot">NA</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-15-4.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="dispersiones-y-dispersiones-múltiples" class="section level3">
+<h3>Dispersiones y dispersiones múltiples</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="kw">pairs</span>(iris)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">pairs</span>(iris,<span class="dt">col=</span>iris<span class="op">$</span>Species,<span class="dt">pch=</span><span class="dv">19</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+</div>
+<div id="gráficos-avanzados" class="section level2">
+<h2>Gráficos Avanzados</h2>
+<p>Existe varios paquetes en <code>R</code> exclusivos para generar gráficos estadísticos, así como existen paquetes de análisis de datos en los cuales los desarrolladores personalizan sus gráficos utilizando <code>base</code> u otros paquetes de graficación. En este módulo veremos algunos de estos paquetes para este fin.</p>
+<hr>
+<div id="gráficos-con-ggplot2" class="section level3">
+<h3>Gráficos con <code>ggplot2</code></h3>
+<p>El paquete <code>ggplot2</code> es un sistema declarativo para construir gráficos basado en el libro <em>The Grammar of Graphics</em>. Hace parte de la colección <code>tidyverse</code> diseñado para Data Science, la cual es una modificación del legueje <code>R</code> con la filosofía de hacer más simple la programación y la lectura de código.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb38-2"><a href="#cb38-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<p>Para graficar con este paquete se requiere establecer qué es lo que se quiere graficar, es decir, cuáles argumentos y papel son los que se quiere visualizar. Luego se agregan las funciones <code>geom</code> que transforma los datos y genera los gráficos por capas.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb39-2"><a href="#cb39-2"></a><span class="kw">ggplot</span>(mtcars)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Para agregar los argumentos se utiliza el comando <code>aes</code> que recibe las variables que se quieren graficar y el papel estético que cumple.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>mpg,<span class="dt">y=</span>disp))</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Para especificar el gráfico que se quiere, se utiliza la batería <code>geom</code> precedido de <code>+</code>.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="co"># Gráfico de dispersiones</span></span>
+<span id="cb41-2"><a href="#cb41-2"></a><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>mpg,<span class="dt">y=</span>disp))<span class="op">+</span></span>
+<span id="cb41-3"><a href="#cb41-3"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>En la página de referencia de <a href="https://ggplot2.tidyverse.org/reference/index.html">ggplot</a> pueden encontrar todas las capas disponibles en el paquete.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>mpg,<span class="dt">y=</span>disp,<span class="dt">colour=</span>drat))<span class="op">+</span></span>
+<span id="cb42-2"><a href="#cb42-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>hp))<span class="op">+</span></span>
+<span id="cb42-3"><a href="#cb42-3"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Desplazamientos vs Consumo</span><span class="ch">\n</span><span class="st">dado los caballos de fuerza y eje trasero&quot;</span>)<span class="op">+</span></span>
+<span id="cb42-4"><a href="#cb42-4"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>mpg,<span class="dt">y=</span>disp,<span class="dt">colour=</span>drat))<span class="op">+</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>hp))<span class="op">+</span></span>
+<span id="cb43-3"><a href="#cb43-3"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Desplazamientos vs Consumo</span><span class="ch">\n</span><span class="st">dado los caballos de fuerza y eje trasero&quot;</span>)<span class="op">+</span></span>
+<span id="cb43-4"><a href="#cb43-4"></a><span class="st">  </span><span class="kw">theme_bw</span>()<span class="op">+</span><span class="kw">scale_color_gradient</span>(<span class="dt">low=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;gold&quot;</span>),<span class="dt">high =</span> <span class="kw">c</span>(<span class="st">&quot;forestgreen&quot;</span>))</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="kw">ggplot</span>(mtcars,<span class="kw">aes</span>(<span class="dt">x=</span>mpg,<span class="dt">y=</span>disp,<span class="dt">colour=</span>drat))<span class="op">+</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>hp))<span class="op">+</span><span class="kw">geom_smooth</span>()<span class="op">+</span></span>
+<span id="cb44-3"><a href="#cb44-3"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Desplazamientos vs Consumo</span><span class="ch">\n</span><span class="st">dado los caballos de fuerza y eje trasero&quot;</span>)<span class="op">+</span></span>
+<span id="cb44-4"><a href="#cb44-4"></a><span class="st">  </span><span class="kw">theme_bw</span>()<span class="op">+</span><span class="kw">scale_color_gradient</span>(<span class="dt">low=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;gold&quot;</span>),<span class="dt">high =</span> <span class="kw">c</span>(<span class="st">&quot;forestgreen&quot;</span>))</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="kw">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb45-2"><a href="#cb45-2"></a>wdata =<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb45-3"><a href="#cb45-3"></a>        <span class="dt">sex =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;M&quot;</span>), <span class="dt">each=</span><span class="dv">200</span>)),</span>
+<span id="cb45-4"><a href="#cb45-4"></a>        <span class="dt">weight =</span> <span class="kw">c</span>(<span class="kw">rnorm</span>(<span class="dv">200</span>, <span class="dv">55</span>), <span class="kw">rnorm</span>(<span class="dv">200</span>, <span class="dv">58</span>)))</span>
+<span id="cb45-5"><a href="#cb45-5"></a><span class="kw">head</span>(wdata)</span></code></pre></div>
+<pre><code>##   sex   weight
+## 1   F 53.79293
+## 2   F 55.27743
+## 3   F 56.08444
+## 4   F 52.65430
+## 5   F 55.42912
+## 6   F 55.50606</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># Box-plot básico desde el data.frame</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="kw">qplot</span>(sex, weight, <span class="dt">data =</span> wdata, </span>
+<span id="cb47-3"><a href="#cb47-3"></a>      <span class="dt">geom=</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">fill =</span> sex)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="co"># Violin plot</span></span>
+<span id="cb48-2"><a href="#cb48-2"></a><span class="kw">qplot</span>(sex, weight, <span class="dt">data =</span> wdata, <span class="dt">geom =</span> <span class="st">&quot;violin&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-5.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="co"># Dot plot</span></span>
+<span id="cb49-2"><a href="#cb49-2"></a><span class="kw">qplot</span>(sex, weight, <span class="dt">data =</span> wdata, <span class="dt">geom =</span> <span class="st">&quot;dotplot&quot;</span>,</span>
+<span id="cb49-3"><a href="#cb49-3"></a>      <span class="dt">stackdir =</span> <span class="st">&quot;center&quot;</span>, <span class="dt">binaxis =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">dotsize =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="co"># Histogramas</span></span>
+<span id="cb50-2"><a href="#cb50-2"></a><span class="co"># Color por grupo (sexo)</span></span>
+<span id="cb50-3"><a href="#cb50-3"></a><span class="kw">qplot</span>(weight, <span class="dt">data =</span> wdata, <span class="dt">geom =</span> <span class="st">&quot;histogram&quot;</span>,</span>
+<span id="cb50-4"><a href="#cb50-4"></a>      <span class="dt">fill =</span> sex)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-7.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="co"># Density plot</span></span>
+<span id="cb51-2"><a href="#cb51-2"></a><span class="co"># Color por grupo (sexo) cambiando el tipo de linea</span></span>
+<span id="cb51-3"><a href="#cb51-3"></a><span class="kw">qplot</span>(weight, <span class="dt">data =</span> wdata, <span class="dt">geom =</span> <span class="st">&quot;density&quot;</span>,</span>
+<span id="cb51-4"><a href="#cb51-4"></a>    <span class="dt">color =</span> sex, <span class="dt">linetype =</span> sex)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-8.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="co"># Se puede asignar la base del gráfico a una variable</span></span>
+<span id="cb52-2"><a href="#cb52-2"></a>a &lt;-<span class="st"> </span><span class="kw">ggplot</span>(wdata, <span class="kw">aes</span>(<span class="dt">x =</span> weight))</span>
+<span id="cb52-3"><a href="#cb52-3"></a><span class="co"># gráfico área</span></span>
+<span id="cb52-4"><a href="#cb52-4"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_area</span>(<span class="dt">stat =</span> <span class="st">&quot;bin&quot;</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-9.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="co"># Color por grupo</span></span>
+<span id="cb53-2"><a href="#cb53-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_area</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> sex), <span class="dt">stat =</span><span class="st">&quot;bin&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb53-3"><a href="#cb53-3"></a><span class="st">  </span><span class="kw">theme_classic</span>()</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-10.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="co"># density plot</span></span>
+<span id="cb54-2"><a href="#cb54-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>()</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-11.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a><span class="co"># color de líneas por grupos</span></span>
+<span id="cb55-2"><a href="#cb55-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">color =</span> sex)) </span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-12.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a><span class="co"># Color por grupo y transparencia</span></span>
+<span id="cb56-2"><a href="#cb56-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> sex), <span class="dt">alpha=</span><span class="fl">0.4</span>)</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-13.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="co"># Media por grupos</span></span>
+<span id="cb57-2"><a href="#cb57-2"></a><span class="co"># install.packages(&quot;plyr&quot;,dependencies = T)</span></span>
+<span id="cb57-3"><a href="#cb57-3"></a><span class="kw">library</span>(plyr)</span>
+<span id="cb57-4"><a href="#cb57-4"></a>(mu &lt;-<span class="st"> </span><span class="kw">ddply</span>(wdata, <span class="st">&quot;sex&quot;</span>, summarise, <span class="dt">grp.mean=</span><span class="kw">mean</span>(weight)))</span></code></pre></div>
+<pre><code>##   sex grp.mean
+## 1   F 54.94224
+## 2   M 58.07325</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="co"># Agregar la media como línea con color manual</span></span>
+<span id="cb59-2"><a href="#cb59-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">color =</span> sex)) <span class="op">+</span></span>
+<span id="cb59-3"><a href="#cb59-3"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">data=</span>mu, <span class="kw">aes</span>(<span class="dt">xintercept=</span>grp.mean, <span class="dt">color=</span>sex),</span>
+<span id="cb59-4"><a href="#cb59-4"></a>             <span class="dt">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="op">+</span></span>
+<span id="cb59-5"><a href="#cb59-5"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#999999&quot;</span>, <span class="st">&quot;#E69F00&quot;</span>))</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-14.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="co"># Dotplot</span></span>
+<span id="cb60-2"><a href="#cb60-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_dotplot</span>()</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-15.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a><span class="co"># Color por grupo</span></span>
+<span id="cb61-2"><a href="#cb61-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_dotplot</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> sex)) </span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-16.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co"># Color manual</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a>a <span class="op">+</span><span class="st"> </span><span class="kw">geom_dotplot</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> sex)) <span class="op">+</span></span>
+<span id="cb62-3"><a href="#cb62-3"></a><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;#999999&quot;</span>, <span class="st">&quot;#E69F00&quot;</span>))</span></code></pre></div>
+<p><img src="Graph_R_files/figure-html/unnamed-chunk-21-17.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Pueden consultar la <a href="http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization">Guía práctica ggplot2</a> que tiene una colección de gráficos <code>ggplot2</code> y los códigos para replicarlos.</p>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
